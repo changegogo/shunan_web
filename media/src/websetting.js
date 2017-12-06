@@ -7,8 +7,7 @@ var WebSetting = function () {
         	
         },
         initTable: function(){// 初始化表格
-        	//////////
-        	var baseurl = "http://20.14.3.19:8080/committeewb/upload/";
+        	var baseurl = CommonUtils.baseUrl+"/upload/";
         	$('#baseinfotable').bootstrapTable({
 				dataType : "json",	
 				cache : false, // 不缓存
@@ -70,6 +69,36 @@ var WebSetting = function () {
 				}],
 				data : []
 			});
+			$('#navinfotable').bootstrapTable({
+				dataType : "json",	
+				cache : false, // 不缓存
+				striped : true, // 隔行加亮
+				columns : [ {
+					field : 'id',
+					align : 'center',
+					valign : 'middle',
+					title : "导航id"
+				},{
+					field : 'name',
+					align : 'center',
+					valign : 'middle',
+					title : "名称"
+				}, {
+					field : 'jumpLink',
+					align : 'center',
+					valign : 'middle',
+					title : "跳转链接"
+				}, {
+					field : 'titleUrl',
+					align : 'center',
+					valign : 'middle',
+					title : "操作",
+					formatter : function(value, row, index) {
+						return "<img class='baseinfo_img' style='width:100px;' src="+ baseurl + value + " />"
+					}
+				}],
+				data : []
+			});
         },
         initData: function(){// 初始化表格数据
         	var self = this;
@@ -93,7 +122,22 @@ var WebSetting = function () {
 					} else {
 						
 					}
-					
+        		},
+        		error: function(err){
+        			alert("error");
+        		}
+        	});
+        	$.ajax({
+        		type:"get",
+        		url:"http://20.14.3.19:8080/committeewb/nav/queryAllNavs",
+        		async:true,
+        		success: function(res){
+        			if (res.code == 200) {
+						$('#navinfotable').bootstrapTable('load', res.data);
+						
+					} else {
+						
+					}
         		},
         		error: function(err){
         			alert("error");
@@ -111,9 +155,12 @@ var WebSetting = function () {
 						console.log("正在上传");
 					},
 					success: function(res){
-						console.log("成功返回");
-						self.initData();
-						alert(res.msg);
+						if(res.code==200){
+							self.initData();
+							alert(res.msg);
+						}else{
+							alert(res.msg);
+						}
 					},
 					error: function(err){
 						console.log("上传失败");
