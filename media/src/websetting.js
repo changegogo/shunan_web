@@ -436,7 +436,7 @@ var WebSetting = function () {
 					title : "图片",
 					formatter : function(value, row, index) {
 						return ["<img style='width:100px;' src="+ self.baseurl+"/upload/"+ value + " />"
-							,"&nbsp;&nbsp;<form id=friendform"+row.id+" enctype='multipart/form-data' style='display: inline;'><input name='picFile' type='file' id='uploadfileinput' /></form>"
+							,"&nbsp;&nbsp;<form id=friendform"+row.id+" enctype='multipart/form-data' style='display: inline;'><input name='picFile' type='file' id='uploadfileinput' style='width:76px;' /></form>"
 						].join("");
 					},
 					events : {
