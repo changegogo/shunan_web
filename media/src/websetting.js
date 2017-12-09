@@ -1,149 +1,160 @@
 var WebSetting = function () {
     return {
-    	baseurl: "",
+    		baseurl: "",
+    		slideDownAlert: function(msg){
+    			var self = this;
+    			$(".alert .alertMsg").html(msg);
+    			$(".alert").slideDown();
+    			setTimeout(function(){
+    				self.slideUpAlert();
+    			}, 1500);
+    		},
+    		slideUpAlert: function(){
+    			$(".alert").slideUp();
+    		},
         init: function () {
             this.baseurl = CommonUtils.baseUrl;
             console.log("WebSetting init");
         },
         initEvent: function(){
-        	var self = this;
-        	$("#addNav").click(function(){
-        		if($(this).html() === "添加"){
-        			$(".addNavInput").fadeIn();
-        			$(this)
-        				.html("隐藏")
-        				.removeClass("btn-success")
-        				.addClass("btn-primary");
-        		}else{
-        			$(".addNavInput").fadeOut();
-        			$(this).html("添加");
-        			$(this)
-        				.html("添加")
-        				.removeClass("btn-primary")
-        				.addClass("btn-success");
-        		}
-        		
-        	});
-        	$("#saveAddNav").click(function(){
-        		// 设置保存按钮不可用，防止连续点击
-        		document.getElementById("saveAddNav").disabled = true;
-        		var navName = $(".navName").val();
-        		var navLink = $(".navLink").val();
-        		var navPos = $(".navPos").val();
-        		console.log(navName);
-        		console.log(navLink);
-        		console.log(navPos);
-        		if(navName === ""){
-        			alert("名称不能为空");
-        			document.getElementById("saveAddNav").disabled = false;
-        			return;
-        		}
-        		if(navLink === ""){
-        			alert("链接不能为空");
-        			document.getElementById("saveAddNav").disabled = false;
-        			return;
-        		}
-        		if(navPos === ""){
-        			navPos = 0;
-        		}
-        		$(".navName").attr("value", "");
-        		$(".navLink").attr("value", "");
-        		$(".navPos").attr("value", "");
-        		$.ajax({
-        			type: "post",
-        			url: self.baseurl+"/nav/insertNav",
-        			async: true,
-        			data: {
-        				name: navName,
-        				jumpLink: navLink,
-        				sort: navPos
-        			},
-        			success: function(res){
-        				document.getElementById("saveAddNav").disabled = false;
-        				if(res.code === 200){
-        					alert(res.msg);
-        					self.initNavTable();
-        				}else{
-        					alert(res.msg);
-        				}
-        			},
-        			error: function(){
-        				document.getElementById("saveAddNav").disabled = false;
-        			}
+        		var self = this;
+       	 	$("#addNav").click(function(){
+	        		if($(this).html() === "添加"){
+	        			$(".addNavInput").fadeIn();
+	        			$(this)
+	        				.html("隐藏")
+	        				.removeClass("btn-success")
+	        				.addClass("btn-primary");
+	        		}else{
+	        			$(".addNavInput").fadeOut();
+	        			$(this).html("添加");
+	        			$(this)
+	        				.html("添加")
+	        				.removeClass("btn-primary")
+	        				.addClass("btn-success");
+	        		}
         		});
-        	});
-        	// 友情链接添加功能
-        	$("#addFriendLink").click(function(){
-        		if($(this).html() === "添加"){
-        			$(".addFriendLinkInput").fadeIn();
-        			$(this)
-        				.html("隐藏")
-        				.removeClass("btn-success")
-        				.addClass("btn-primary");
-        		}else{
-        			$(".addFriendLinkInput").fadeOut();
-        			$(this)
-        				.html("添加")
-        				.removeClass("btn-primary")
-        				.addClass("btn-success");
-        		}
-        	});
-        	$("#saveAddFriendLink").click(function(){
-        		// 设置保存按钮不可用，防止连续点击
-        		document.getElementById("saveAddFriendLink").disabled = true;
-        		var friendLinkName = $(".friendLinkName").val();
-        		var friendLinkUrl = $(".friendLinkUrl").val();
-        		var friendLinkPic = $(".friendLinkPic").val();
-        		console.log(friendLinkName);
-        		console.log(friendLinkUrl);
-        		console.log(friendLinkPic);
-        		if(friendLinkName === ""){
-        			alert("名称不能为空");
-        			document.getElementById("saveAddFriendLink").disabled = false;
-        			return;
-        		}
-        		if(friendLinkUrl === ""){
-        			alert("链接不能为空");
-        			document.getElementById("saveAddFriendLink").disabled = false;
-        			return;
-        		}
-        		if(friendLinkPic === ""){
-        			alert("图片不能为空");
-        			document.getElementById("saveAddFriendLink").disabled = false;
-        			return;
-        		}
-        		// 组装FormData对象
-				var form = document.getElementById("friendLinkForm");
-				var formData = new FormData(form);
-				formData.append("type", 1);
-				
-        		$(".friendLinkName").attr("value", "");
-        		$(".friendLinkUrl").attr("value", "");
-        		$(".friendLinkPic").attr("value", "");
-        		
-        		var xhr = new XMLHttpRequest();
-				xhr.open("POST", self.baseurl+"/banner/insertBanner", true);
-				
-				 //注册相关事件回调处理函数
-				xhr.onload = function(e) { 
-				    if(this.status == 200||this.status == 304){
-				        console.log(this.responseText);
-				        var res = window.JSON.parse(this.responseText);
-				        if(res.code === 200){
-				        	alert(res.msg);
-				        	document.getElementById("saveAddFriendLink").disabled = false;
-				        	self.initFriendLinkTable();
-				        }else{
-				        	
-				        }
-				    }
-				};
-				/*xhr.ontimeout = function(e) { ... };
-				xhr.onerror = function(e) { ... };
-				xhr.upload.onprogress = function(e) { ... };*/
-				//发送数据
-				xhr.send(formData);
-        	});
+	        	$("#saveAddNav").click(function(){
+	        		// 设置保存按钮不可用，防止连续点击
+	        		document.getElementById("saveAddNav").disabled = true;
+	        		var navName = $(".navName").val();
+	        		var navLink = $(".navLink").val();
+	        		var navPos = $(".navPos").val();
+	        		console.log(navName);
+	        		console.log(navLink);
+	        		console.log(navPos);
+	        		if(navName === ""){
+	        			alert("名称不能为空");
+	        			document.getElementById("saveAddNav").disabled = false;
+	        			return;
+	        		}
+	        		if(navLink === ""){
+	        			alert("链接不能为空");
+	        			document.getElementById("saveAddNav").disabled = false;
+	        			return;
+	        		}
+	        		if(navPos === ""){
+	        			navPos = 0;
+	        		}
+	        		$(".navName").attr("value", "");
+	        		$(".navLink").attr("value", "");
+	        		$(".navPos").attr("value", "");
+	        		$.ajax({
+	        			type: "post",
+	        			url: self.baseurl+"/nav/insertNav",
+	        			async: true,
+	        			data: {
+	        				name: navName,
+	        				jumpLink: navLink,
+	        				sort: navPos
+	        			},
+	        			success: function(res){
+	        				document.getElementById("saveAddNav").disabled = false;
+	        				if(res.code === 200){
+	        					self.slideDownAlert(res.msg);
+	        					self.initNavTable();
+	        				}else{
+	        					self.slideDownAlert(res.msg);
+	        				}
+	        			},
+	        			error: function(){
+	        				document.getElementById("saveAddNav").disabled = false;
+	        			}
+	        		});
+	        	});
+	        	// 友情链接添加功能
+	        	$("#addFriendLink").click(function(){
+	        		if($(this).html() === "添加"){
+	        			$(".addFriendLinkInput").fadeIn();
+	        			$(this)
+	        				.html("隐藏")
+	        				.removeClass("btn-success")
+	        				.addClass("btn-primary");
+	        		}else{
+	        			$(".addFriendLinkInput").fadeOut();
+	        			$(this)
+	        				.html("添加")
+	        				.removeClass("btn-primary")
+	        				.addClass("btn-success");
+	        		}
+	        	});
+	        	$("#saveAddFriendLink").click(function(){
+	        		// 设置保存按钮不可用，防止连续点击
+	        		document.getElementById("saveAddFriendLink").disabled = true;
+	        		var friendLinkName = $(".friendLinkName").val();
+	        		var friendLinkUrl = $(".friendLinkUrl").val();
+	        		var friendLinkPic = $(".friendLinkPic").val();
+	        		console.log(friendLinkName);
+	        		console.log(friendLinkUrl);
+	        		console.log(friendLinkPic);
+	        		if(friendLinkName === ""){
+	        			alert("名称不能为空");
+	        			document.getElementById("saveAddFriendLink").disabled = false;
+	        			return;
+	        		}
+	        		if(friendLinkUrl === ""){
+	        			alert("链接不能为空");
+	        			document.getElementById("saveAddFriendLink").disabled = false;
+	        			return;
+	        		}
+	        		if(friendLinkPic === ""){
+	        			alert("图片不能为空");
+	        			document.getElementById("saveAddFriendLink").disabled = false;
+	        			return;
+	        		}
+	        		// 组装FormData对象
+					var form = document.getElementById("friendLinkForm");
+					var formData = new FormData(form);
+					formData.append("type", 1);
+					
+	        		$(".friendLinkName").attr("value", "");
+	        		$(".friendLinkUrl").attr("value", "");
+	        		$(".friendLinkPic").attr("value", "");
+	        		
+	        		var xhr = new XMLHttpRequest();
+					xhr.open("POST", self.baseurl+"/banner/insertBanner", true);
+					
+					 //注册相关事件回调处理函数
+					xhr.onload = function(e) { 
+					    if(this.status == 200||this.status == 304){
+					        console.log(this.responseText);
+					        var res = window.JSON.parse(this.responseText);
+					        if(res.code === 200){
+	                        self.slideDownAlert(res.msg);
+					        	
+					        	document.getElementById("saveAddFriendLink").disabled = false;
+					        	self.initFriendLinkTable();
+					        }else{
+					        	self.slideDownAlert(res.msg);
+					        }
+					    }
+					};
+					/*xhr.ontimeout = function(e) { ... };
+					xhr.onerror = function(e) { ... };
+					xhr.upload.onprogress = function(e) { ... };*/
+					//发送数据
+					xhr.send(formData);
+	        	});
         },
         initTable: function(){// 初始化表格
         	var self = this;
@@ -289,11 +300,11 @@ var WebSetting = function () {
 										id: row.id
 									},
 									success: function(res){
-										alert(res.msg);
+										self.slideDownAlert(res.msg);
 										self.initNavTable();
 									},
 									error: function(){
-										
+										self.slideDownAlert("删除失败");
 									}
 								});
 							}
@@ -309,12 +320,12 @@ var WebSetting = function () {
 	                    dataType: 'JSON',
 	                    success: function (res, status) {
 	                        if (status == "success") {
-	                        	self.initNavTable();
-	                            alert('修改数据成功');
+	                        		self.initNavTable();
+	                        		self.slideDownAlert("修改数据成功");
 	                        }
 	                    },
 	                    error: function () {
-	                        alert('修改失败');
+	                   	 	self.slideDownAlert("修改失败");
 	                    },
 	                    complete: function () {
 	
@@ -381,12 +392,13 @@ var WebSetting = function () {
 	                    dataType: 'JSON',
 	                    success: function (res, status) {
 	                        if (status == "success") {
-	                        	self.initBannnerTable();
-	                            alert('修改数据成功');
+	                        		self.slideDownAlert("修改数据成功!");
+	                        		self.initBannnerTable();
 	                        }
 	                    },
 	                    error: function () {
-	                        alert('修改失败');
+	                    		self.slideDownAlert("修改失败!");
+	                        //alert('修改失败');
 	                    },
 	                    complete: function () {
 	
@@ -457,8 +469,8 @@ var WebSetting = function () {
 							        console.log(this.responseText);
 							        var res = window.JSON.parse(this.responseText);
 							        if(res.code === 200){
-							        	alert(res.msg);
-							        	self.initFriendLinkTable();
+							        		self.slideDownAlert(res.msg);
+							        		self.initFriendLinkTable();
 							        }else{
 							        	
 							        }
@@ -504,9 +516,12 @@ var WebSetting = function () {
 									},
 									success: function(res){
 										if(res.code === 200){
+											self.slideDownAlert("删除成功！");
 											self.initFriendLinkTable();
+										}else{
+	                            				self.slideDownAlert(res.msg);
 										}
-										alert(res.msg);
+										
 									}
 								});
 							}
@@ -526,11 +541,11 @@ var WebSetting = function () {
 	                    success: function (res, status) {
 	                        if (status == "success") {
 	                        	self.initBannnerTable();
-	                            alert('修改数据成功');
+	                            self.slideDownAlert("修改数据成功");
 	                        }
 	                    },
 	                    error: function () {
-	                        alert('修改失败');
+	                       	self.slideDownAlert("修改失败");
 	                    },
 	                    complete: function () {
 	
@@ -565,7 +580,7 @@ var WebSetting = function () {
 					}
         		},
         		error: function(err){
-        			alert("error");
+        			self.slideDownAlert("error");
         		}
         	});
         },
@@ -583,7 +598,7 @@ var WebSetting = function () {
 					}
         		},
         		error: function(err){
-        			alert("error");
+        			self.slideDownAlert("error");
         		}
         	});
         },
@@ -608,7 +623,7 @@ var WebSetting = function () {
 					}
         		},
         		error: function(err){
-        			alert("error");
+        			self.slideDownAlert("error");
         		}
         	});
         },
@@ -633,7 +648,7 @@ var WebSetting = function () {
 					}
         		},
         		error: function(err){
-        			alert("error");
+        			self.slideDownAlert("error");
         		}
         	});
         },
@@ -654,13 +669,13 @@ var WebSetting = function () {
 					success: function(res){
 						if(res.code==200){
 							self.initWebInfoTable();
-							alert(res.msg);
+        						self.slideDownAlert(res.msg);
 						}else{
-							alert(res.msg);
+							self.slideDownAlert(res.msg);
 						}
 					},
 					error: function(err){
-						console.log("上传失败");
+						self.slideDownAlert("上传失败");
 					}
 				};
 				$("#mybaseForm").ajaxSubmit(options);
@@ -678,13 +693,14 @@ var WebSetting = function () {
 					success: function(res){
 						if(res.code==200){
 							self.initBannnerTable();
-							alert(res.msg);
+							self.slideDownAlert(res.msg);
 						}else{
-							alert(res.msg);
+							self.slideDownAlert(res.msg);
 						}
 					},
 					error: function(err){
-						console.log("上传失败");
+						self.slideDownAlert("上传失败");
+						
 					}
 				};
 				$("#mybannerForm").ajaxSubmit(options);
