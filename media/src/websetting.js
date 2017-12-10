@@ -448,7 +448,7 @@ var WebSetting = function () {
 					title : "图片",
 					formatter : function(value, row, index) {
 						return ["<img style='width:100px;' src="+ self.baseurl+"/upload/"+ value + " />"
-							,"&nbsp;&nbsp;<form id=friendform"+row.id+" enctype='multipart/form-data' style='display: inline;'><input name='picFile' type='file' id='uploadfileinput' style='width:76px;' /></form>"
+							,"&nbsp;&nbsp;<form class='uploadForm' id=friendform"+row.id+" enctype='multipart/form-data'><div class='myinput'><i class='modifybtn'>修改</i><input name='picFile' type='file' id='uploadfileinput' /></div></form>"
 						].join("");
 					},
 					events : {

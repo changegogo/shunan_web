@@ -2167,7 +2167,7 @@ Bordered form layout
 Uniform plugin css changes
 ***/
 
-.radio, .checkbox {
+/*.radio, .checkbox {
   padding-left: 0px !important;
 }
 
@@ -2188,7 +2188,7 @@ Uniform plugin css changes
   margin-top: 8px;
   font-weight: 400;
   font-size: 14px;
-}
+}*/
 
 
 /* used for non horizontal forms */
