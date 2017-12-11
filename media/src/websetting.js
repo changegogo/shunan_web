@@ -446,6 +446,7 @@ var WebSetting = function () {
 					align : 'center',
 					valign : 'middle',
 					title : "图片",
+					width: 200,
 					formatter : function(value, row, index) {
 						return ["<img style='width:100px;' src="+ self.baseurl+"/upload/"+ value + " />"
 							,"&nbsp;&nbsp;<form class='uploadForm' id=friendform"+row.id+" enctype='multipart/form-data'><div class='myinput'><i class='modifybtn'>修改</i><input name='picFile' type='file' id='uploadfileinput' /></div></form>"
@@ -501,6 +502,7 @@ var WebSetting = function () {
 					align : 'center',
 					valign : 'middle',
 					title : "操作",
+					width: 100,
 					formatter : function(value, row, index) {
 						return "<button id='remove' class='btn btn-danger btn-mini'><i class='icon-remove'></i>  删除</button>";
 					},
@@ -564,14 +566,14 @@ var WebSetting = function () {
         		async:true,
         		success: function(res){
         			if (res.code == 200) {
-						$('#baseinfotable').bootstrapTable('load', res.data);
+						$('#baseinfotable').bootstrapTable('load', res.rows);
 						// 初始化表单text数据
-						$("input[name=id]").val(res.data[0].id);
-						$("input[name=field1]").val(res.data[0].field1);
-						$("input[name=field2]").val(res.data[0].field2);
-						$("input[name=field3]").val(res.data[0].field3);
-						$("input[name=field4]").val(res.data[0].field4);
-						$("input[name=field5]").val(res.data[0].field5);
+						$("input[name=id]").val(res.rows[0].id);
+						$("input[name=field1]").val(res.rows[0].field1);
+						$("input[name=field2]").val(res.rows[0].field2);
+						$("input[name=field3]").val(res.rows[0].field3);
+						$("input[name=field4]").val(res.rows[0].field4);
+						$("input[name=field5]").val(res.rows[0].field5);
 						
 						// 加载图片的点击事件
 						self.initEvent();
@@ -592,7 +594,7 @@ var WebSetting = function () {
         		async:true,
         		success: function(res){
         			if (res.code == 200) {
-						$('#navinfotable').bootstrapTable('load', res.data);
+						$('#navinfotable').bootstrapTable('load', res.rows);
 					} else {
 						
 					}
@@ -613,10 +615,10 @@ var WebSetting = function () {
         		},
         		success: function(res){
         			if (res.code == 200) {
-						$('#bannertable').bootstrapTable('load', res.data);
-						$("#bannerid").val(res.data[0].id);
-						$("#bannername").val(res.data[0].name);
-						$("#bannerlink").val(res.data[0].jumpLink);
+						$('#bannertable').bootstrapTable('load', res.rows);
+						$("#bannerid").val(res.rows[0].id);
+						$("#bannername").val(res.rows[0].name);
+						$("#bannerlink").val(res.rows[0].jumpLink);
 						
 					} else {
 						
@@ -638,10 +640,10 @@ var WebSetting = function () {
         		},
         		success: function(res){
         			if (res.code == 200) {
-						$('#friendLinktable').bootstrapTable('load', res.data);
-						/*$("#bannerid").val(res.data[0].id);
-						$("#bannername").val(res.data[0].name);
-						$("#bannerlink").val(res.data[0].jumpLink);*/
+						$('#friendLinktable').bootstrapTable('load', res.rows);
+						/*$("#bannerid").val(res.rows[0].id);
+						$("#bannername").val(res.rows[0].name);
+						$("#bannerlink").val(res.rows[0].jumpLink);*/
 						
 					} else {
 						
@@ -700,7 +702,6 @@ var WebSetting = function () {
 					},
 					error: function(err){
 						self.slideDownAlert("上传失败");
-						
 					}
 				};
 				$("#mybannerForm").ajaxSubmit(options);
