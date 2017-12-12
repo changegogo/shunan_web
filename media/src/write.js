@@ -122,13 +122,15 @@ var Write = (function(){
 			        }, delay);
 			    }
 			};
+			self.textarea.bind('input propertychange', throttle(function(){
+				console.log('内容改变textarea:'+self.textarea.val());
+			}, 1000));
+			
 			self.ue.addListener("contentChange",throttle(function(){
 				console.log('内容改变:'+self.ue.getContent());
 			}, 1000));
 			
-			self.textarea.bind('input propertychange', throttle(function(){
-				console.log('内容改变textarea:'+self.textarea.val());
-			}, 1000));
+			
 		}
 	}
 })()
