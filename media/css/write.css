@@ -53,7 +53,15 @@ body {
 	margin-top: 4px;
 	margin-right: 5px;
 }
-
+.header .box{
+	position: absolute;
+	top:50px;
+	right: 0;
+	width: 200px;
+	height: 100px;
+	border: 1px solid red;
+	/*display: none;*/
+}
 
 .edit-wrapper {
 	margin: 47px auto 0;
