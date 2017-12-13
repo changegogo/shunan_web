@@ -12,7 +12,7 @@ var Write = (function(){
 			this.initData();
 		},
 		initData: function(){
-			this.ajaxEdit({});
+			//this.ajaxEdit({});
 		},
 		// 初始化textArea使其能够随着输入文本的多少换行
 		initTextArea: function(){
