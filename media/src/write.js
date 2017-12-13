@@ -93,7 +93,7 @@ var Write = (function(){
 	    	toolbars: [[
 	        /*'fullscreen',*/ 'source', '|', 'undo', 'redo', '|',
 	        'bold', 'italic', 'underline', 'fontborder', 'strikethrough', /*'superscript', 'subscript',*/ 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
-	        'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+	        'rowspacingtop', 'rowspacingbottom', 'lineheight', /*'|',*/
 	        'customstyle', 'paragraph', /*'fontfamily',*/ 'fontsize', '|',
 	        'directionalityltr', 'directionalityrtl', 'indent', '|',
 	        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
@@ -168,6 +168,9 @@ var Write = (function(){
 			// 获取对象中的属性个数
 			var objPropertyCount = Object.getOwnPropertyNames(dataObj).length;
 			var articleId = $("#articleId").html();
+			if(articleId == -1 && objPropertyCount == 0){
+				return;
+			}
 			$.ajax({
 				type: "post",
 				url: self.baseurl+"/news/draft/"+articleId,
@@ -182,6 +185,7 @@ var Write = (function(){
 							console.log("初始化数据");
 							console.log(res);
 							self.textarea.val(res.rows[0].title);
+							self.initTextArea()
 							self.ue.addListener("ready", function () {
 					            self.ue.setContent(res.rows[0].content);
 					        }); 
