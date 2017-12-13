@@ -1,3 +1,7 @@
+* {
+	margin: 0;
+	padding: 0;
+}
 body {
 	/*text-align: center;*/
 }
@@ -17,7 +21,7 @@ body {
 	font-weight: 300;
 	color: #8B8B8B;
 	line-height: 46px;
-	margin-left: 10px;
+	margin-left: 30px;
 }
 .header .title-wrapper {
 	margin: 0 auto;
@@ -31,8 +35,15 @@ body {
 }
 
 .header .title-wrapper .titleinfo {
-	color: #DBDBDB;
 	margin-left: 10px;
+}
+
+.header .title-wrapper .titlegray {
+	color: #DBDBDB;
+}
+
+.header .title-wrapper .titlered {
+	color: #FF0000;
 }
 
 .header .publish-wapper{
@@ -50,8 +61,8 @@ body {
 	line-height: 32px;
 	padding: 0 15px;
 	color: #ccc;
-	margin-top: 4px;
-	margin-right: 5px;
+	margin-top: 7px;
+	margin-right: 55px;
 }
 .header .box{
 	position: absolute;
@@ -60,7 +71,7 @@ body {
 	width: 200px;
 	height: 100px;
 	border: 1px solid red;
-	/*display: none;*/
+	display: none;
 }
 
 .edit-wrapper {
