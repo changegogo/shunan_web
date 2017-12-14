@@ -152,7 +152,7 @@ var Write = (function(){
 			        if(res.code === 200){
 			        	if(articleId==-1){
 			        		$("#articleId").html(res.rows[0].id);
-							window.history.replaceState({}, '', "news/edit/"+res.rows[0].id);
+							window.history.replaceState({}, '', "edit/"+res.rows[0].id);
 			        	}
 			        	$(".writeCover-previewWrapper").hide();
 			        	$("#tiTuImg").attr("src", self.baseurl+"/upload/"+res.rows[0].picUrl);
@@ -259,7 +259,7 @@ var Write = (function(){
 					if(res.code===200){
 						if(articleId == -1){
 							$("#articleId").html(res.rows[0].id);
-							window.history.replaceState({}, '', "news/edit/"+res.rows[0].id);
+							window.history.replaceState({}, '', "edit/"+res.rows[0].id);
 						}else if(objPropertyCount==0){
 							console.log("初始化数据");
 							// 题图赋值
