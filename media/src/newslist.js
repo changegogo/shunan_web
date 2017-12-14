@@ -205,7 +205,7 @@ var NewsList = (function(){
 					title : "操作",
 					width: 100,
 					formatter: function(value, row, index){
-						return "<button class='btn btn-primary btn-mini'>编辑</button>";
+						return "<a target='_blank' href='/committeewb/news/edit/'"+row.id+" class='btn btn-primary btn-mini'>编辑</a>";
 					}
 				}],
 				data : []
