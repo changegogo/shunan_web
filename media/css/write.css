@@ -77,7 +77,7 @@ body {
 }
 
 .edit-wrapper {
-	margin: 55px auto 0;
+	margin: 60px auto 0;
 	width: 660px;
 	height: 200px;
 }
@@ -92,7 +92,7 @@ body {
 .edit-wrapper .writeCover-wrapper .writeCover-previewWrapper{
 	height: 100%;
 	position: relative;
-	display: none;
+	/*display: none;*/
 }
 .edit-wrapper .writeCover-wrapper .addtext{
 	position: absolute;
@@ -106,7 +106,7 @@ body {
     top: 106px;
     left: 330px;
     line-height: 30px;
-	/*display: none;*/
+	display: none;
 }
 .edit-wrapper .writeCover-wrapper  .progress-wrapper #progressbar{
     position: absolute;
@@ -123,7 +123,7 @@ body {
 .edit-wrapper .writeCover-wrapper  .progress-wrapper #fill{
     text-align: center;
     height:5px;
-    width: 30%;
+    width: 0;
     background-color: #ccc;
     border-radius: 5px;
 }
@@ -132,7 +132,7 @@ body {
 }
 
 .writeCover-previewWrapper .writeCover-uploadIcon {
-	font-size: 42px;
+	font-size: 26px;
 	line-height: 192px;
 	color: rgba(0, 0, 0, .2 );
 }
@@ -148,12 +148,15 @@ body {
 	z-index: 2;
 	opacity: 0;
 }
+
 .edit-wrapper .writeCover-wrapper .img-wrapper{
 	position: relative;
+	display: none;
+	min-height: 192px;
 }
 .edit-wrapper .writeCover-wrapper .img-wrapper .reset-delete-wrapper{
 	position: absolute;
-	bottom: 5px;
+	bottom: 0;
 	right: 0;
 	background: rgba(0,0,0,0.6);
 	border-radius: 5px 0 0 0;
@@ -161,11 +164,24 @@ body {
     height: 40px;
 }
 .edit-wrapper .writeCover-wrapper .img-wrapper .reset-delete-wrapper .rede{
+	position: relative;
 	display: inline-block;
-	width: 47px;
-	font-size: 14px;
+	width: 42px;
+	font-size: 13px;
 	line-height: 40px;
 	text-align: center;
+	cursor: pointer;
+}
+
+.edit-wrapper .writeCover-wrapper .img-wrapper .reset-delete-wrapper .reset .reset-uploadInput {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
+	opacity: 0;
 }
 
 .edit-wrapper .writeTitle-wrapper {
@@ -175,7 +191,6 @@ body {
 	height: auto;
 	widows: 100%;
 	position: relative;
-	background: red;
 }
 
 #textarea { 
