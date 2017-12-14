@@ -9,5 +9,8 @@ var Progressbar={
             document.getElementById("fill").style.width = count+'%';
             if(count===100) clearInterval(timer);
         },10);
+    },
+    progress: function(){
+    	
     }
 };
