@@ -3,10 +3,7 @@ var Write = (function(){
 		baseurl: "",
 		textarea: null, // 文本框对象
 		ue: null, // 富文本对象
-		timer: null, // 节流器中的定时器
 		init: function(){
-			// 初始化进度条
-			Progressbar.init();
 			this.baseurl = CommonUtils.baseUrl;
 			this.initTextArea();
 			this.initUE();
@@ -92,30 +89,20 @@ var Write = (function(){
 		},
 		initUE: function(){
 			this.ue = UE.getEditor('editor',{
-		    	toolbars: [[
-		        /*'fullscreen',*/ 'source', '|', 'undo', 'redo', '|',
-		        'bold', 'italic', 'underline', 'fontborder', 'strikethrough', /*'superscript', 'subscript',*/ 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
-		        'rowspacingtop', 'rowspacingbottom', 'lineheight', /*'|',*/
-		        'customstyle', 'paragraph', /*'fontfamily',*/ 'fontsize', '|',
-		        'directionalityltr', 'directionalityrtl', 'indent', '|',
-		        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
-		        'link', 'unlink', /*'anchor',*/ '|', /*'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',*/
-		        'simpleupload', 'insertimage', 'emotion', /*'scrawl', 'music',*/ 'attachment', /*'map', 'insertframe',*/ 'insertcode', /*'template',*/ '|',
-		        'horizontal', 'date', 'time', 'spechars', /*'snapscreen', 'wordimage',*/ '|',
-		        /*'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', '|',*/
-		        'print', 'preview', 'searchreplace', 'drafts'/*, 'help'*/
-		    	]],
-		    });
-		},
-		hideFileInput: function(){
-			$(".writeCover-uploadIcon").hide();
-			$("#tiTuFileInput").hide();
-			/*$(".addtext").hide();*/
-		},
-		showFileInput: function(){
-			$(".writeCover-uploadIcon").show();
-			$("#tiTuFileInput").show();
-			/*$(".addtext").show();*/
+	    	toolbars: [[
+	        /*'fullscreen',*/ 'source', '|', 'undo', 'redo', '|',
+	        'bold', 'italic', 'underline', 'fontborder', 'strikethrough', /*'superscript', 'subscript',*/ 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+	        'rowspacingtop', 'rowspacingbottom', 'lineheight', /*'|',*/
+	        'customstyle', 'paragraph', /*'fontfamily',*/ 'fontsize', '|',
+	        'directionalityltr', 'directionalityrtl', 'indent', '|',
+	        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+	        'link', 'unlink', /*'anchor',*/ '|', /*'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',*/
+	        'simpleupload', 'insertimage', 'emotion', /*'scrawl', 'music',*/ 'attachment', /*'map', 'insertframe',*/ 'insertcode', /*'template',*/ '|',
+	        'horizontal', 'date', 'time', 'spechars', /*'snapscreen', 'wordimage',*/ '|',
+	        /*'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', '|',*/
+	        'print', 'preview', 'searchreplace', 'drafts'/*, 'help'*/
+	    	]],
+	    });
 		},
 		// 节流函数
 		throttle: function(action, delay){
@@ -128,68 +115,18 @@ var Write = (function(){
 		    }
 		  }
 		},
-		uploadTiTu: function(formId){
-			var self = this;
-			$(".writeCover-previewWrapper").show();
-			// 显示进度条
-			Progressbar.show();
-			// 显示进度条的同时，隐藏file input
-			self.hideFileInput();
-			$(".img-wrapper").hide();
-			// 组装FormData对象
-			var form = document.getElementById(formId);
-			var formData = new FormData(form);
-			// 文章id
-			var articleId = $("#articleId").html();
-			
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", self.baseurl+"/news/draft/"+articleId, true);
-			 //注册相关事件回调处理函数
-			xhr.onload = function(e) {
-			    if(this.status == 200||this.status == 304){
-			        console.log(this.responseText);
-			        var res = window.JSON.parse(this.responseText);
-			        if(res.code === 200){
-			        	if(articleId==-1){
-			        		$("#articleId").html(res.rows[0].id);
-							window.history.replaceState({}, '', "edit/"+res.rows[0].id);
-			        	}
-			        	$(".writeCover-previewWrapper").hide();
-			        	$("#tiTuImg").attr("src", self.baseurl+"/upload/"+res.rows[0].picUrl);
-			        	$(".img-wrapper").show();
-			        }else{
-			        	alert("未知错误3");
-			        }
-			    }
-			};
-			/*xhr.ontimeout = function(e) { ... };*/
-			xhr.onerror = function(e) {
-				alert("未知错误！");
-			};
-			/*
-			 * console.log('总字节数-->'+e.total);
-             * console.log('加载-->'+e.loaded);
-			 * */
-			xhr.upload.onprogress = function(e) {
-				var percent =  ~~((e.loaded/e.total)*100)+"%";
-				console.log(percent);
-				Progressbar.updateProgress(percent);
-				if(percent == '100%'){
-					// 隐藏进度条
-					Progressbar.hide();
-				}
-			};
-			//发送数据
-			xhr.send(formData);
-		},
 		initEvent: function(){
 			var self = this; 
-			// 题图的change事件
-			$("#tiTuFileInput").change(function(){
-				self.uploadTiTu("tiTuFileInput");
-			});
-			
-			
+			var throttle = function (fn, delay) {
+				console.log("throttle");
+			    var timer = null;
+			    return function () {
+			        clearTimeout(timer);
+			        timer = setTimeout(function() {
+			            fn();
+			        }, delay);
+			    }
+			};
 			// 屏蔽textarea的回车换行事件
 			self.textarea.keydown(function(e){
 				if(e.keyCode!=13) return;
@@ -198,7 +135,7 @@ var Write = (function(){
                 $(this).val(value);
 			});
 			// textarea的属性改变事件
-			self.textarea.bind('input propertychange', CommonUtils.throttle(function(){
+			self.textarea.bind('input propertychange', throttle(function(){
 				// 获取标题文本内容
 				var textareaVal = self.textarea.val();
 				// 1.判断标题内容的长度，至多允许100个字符
@@ -220,27 +157,10 @@ var Write = (function(){
 				self.ajaxEdit({title: textareaVal});
 			}, 1000));
 			// 富文本框的内容改变事件
-			self.ue.addListener("contentChange",CommonUtils.throttle(function(){
+			self.ue.addListener("contentChange",throttle(function(){
 				var contentVal = self.ue.getContent();
 				self.ajaxEdit({content: contentVal});
 			}, 2000));
-			
-			// 替换删除的click事件
-			/*$(".reset").click(function(){
-				alert("重置");
-			});*/
-			$("#resettiTuFileInput").change(function(){
-				self.uploadTiTu("resettiTuFileInput");
-			});
-			$(".remove").click(function(){
-				self.showFileInput();
-				$(".writeCover-previewWrapper").show();
-				$(".img-wrapper").hide();
-				self.ajaxEdit({
-					picUrl: ""
-				});
-	        	
-			});
 		},
 		ajaxEdit: function(dataObj){
 			var self = this;
@@ -259,24 +179,12 @@ var Write = (function(){
 					if(res.code===200){
 						if(articleId == -1){
 							$("#articleId").html(res.rows[0].id);
-							window.history.replaceState({}, '', "edit/"+res.rows[0].id);
+							window.history.replaceState({}, '', "news/edit/"+res.rows[0].id);
 						}else if(objPropertyCount==0){
 							console.log("初始化数据");
-							// 题图赋值
 							console.log(res);
-							if(res.rows[0].picUrl != null && res.rows[0].picUrl != ""){
-								$(".writeCover-previewWrapper").hide();
-					        	$("#tiTuImg").attr("src", self.baseurl+"/upload/"+res.rows[0].picUrl);
-					        	$(".img-wrapper").show();
-							}else{
-								
-							}
-							
-							
-							// textarea赋值							
 							self.textarea.val(res.rows[0].title);
-							self.initTextArea();
-							// ue赋值	
+							self.initTextArea()
 							self.ue.addListener("ready", function () {
 					            self.ue.setContent(res.rows[0].content);
 					        }); 

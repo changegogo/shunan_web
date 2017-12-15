@@ -77,9 +77,13 @@ body {
 }
 
 .edit-wrapper {
-	margin: 60px auto 0;
+	margin: 65px auto 0;
 	width: 660px;
 	height: 200px;
+}
+
+.edit-wrapper .newsType-wrapper {
+	padding: 0 0 9px 0;
 }
 
 .edit-wrapper .writeCover-wrapper {
@@ -87,6 +91,10 @@ body {
 	color: gray;
 	min-height: 192px;
 	text-align: center;
+}
+
+.edit-wrapper .writeCover-wrapper .noticeInfo {
+	position: absolute;
 }
 
 .edit-wrapper .writeCover-wrapper .writeCover-previewWrapper{
