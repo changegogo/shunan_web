@@ -31,12 +31,35 @@
 			</div>
 			<div class="box">下拉框</div>
 		</div>
+		
 		<div class="edit-wrapper">
+			<div class="newsType-wrapper">
+				<b>新闻类型:</b>
+				<label for="newstype1">
+					<input id="newstype1" name="newstype" type="radio" value="1" checked/>重点专注 <span style="color: #EEEEEE;">|</span> 
+				</label>
+				<label for="newstype2">
+					<input id="newstype2" name="newstype" type="radio" value="2" />公告栏 <span style="color: #EEEEEE;">|</span> 
+				</label>
+				<label for="newstype3">
+					<input id="newstype3" name="newstype" type="radio" value="3" />文件通知 <span style="color: #EEEEEE;">|</span> 
+				</label>
+				<label for="newstype4">
+					<input id="newstype4" name="newstype" type="radio" value="4" />团青快讯 <span style="color: #EEEEEE;">|</span> 
+				</label>
+				<label for="newstype5">
+					<input id="newstype5" name="newstype" type="radio" value="5" />蜀南青语 <span style="color: #EEEEEE;">|</span> 
+				</label>
+				<label for="newstype6">
+					<input id="newstype6" name="newstype" type="radio" value="6" />专题活动
+				</label>
+			</div>
 			<div class="writeCover-wrapper">
+				<div class="noticeInfo">图片像素宽高比要求16:9</div>
 				<div class="writeCover-previewWrapper">
 					<i class="writeCover-uploadIcon icon-picture"></i>
 					<form id="tiTuFileInput" enctype='multipart/form-data'>
-						<input type="file" class="writeCover-uploadInput" name="picFile" accept=".jpeg,.jpg,.png">
+						<input id="inputid" type="file" class="writeCover-uploadInput" name="picFile" accept=".jpeg,.jpg,.png">
 					</form>
 					<div class="addtext">添加题图</div>
 					<div id="progress-wrapper" class="progress-wrapper">
@@ -51,7 +74,7 @@
 					<div class="reset-delete-wrapper"> 
 						<div class="rede reset">
 							<form  id="resettiTuFileInput" enctype='multipart/form-data'>
-								<input title="替换" type="file" class="reset-uploadInput" name="picFile" accept=".jpeg,.jpg,.png">
+								<input id="resetInputid" title="替换" type="file" class="reset-uploadInput" name="picFile" accept=".jpeg,.jpg,.png">
 							</form>
 							<i class="icon-picture"></i>替换</div>
 						<div class="rede remove" title="删除"><i class="icon-remove"></i>删除</div>
@@ -67,7 +90,7 @@
 				</script>
 			</div>
 		</div>
-   		<!--<script src="media/js/jquery-1.10.1.min.js"></script>-->
+ 	    <!--<script src="media/js/jquery-1.10.1.min.js"></script>-->
  	    <script src="${pageContext.request.contextPath }/admin/media/js/third-party/jquery.min.js"></script>
     	<script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/admin/media/js/ueditor.config.js"></script>
 	    <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/admin/media/js/ueditor.all.js"> </script>

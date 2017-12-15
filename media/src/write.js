@@ -3,7 +3,8 @@ var Write = (function(){
 		baseurl: "",
 		textarea: null, // 文本框对象
 		ue: null, // 富文本对象
-		timer: null, // 节流器中的定时器
+		timer: null, // 节流器中的定时器,
+		picSize: 5 * 1024 * 1024, // 1M
 		init: function(){
 			// 初始化进度条
 			Progressbar.init();
@@ -12,6 +13,21 @@ var Write = (function(){
 			this.initUE();
 			this.initEvent();
 			this.initData();
+			//执行一个laydate实例
+			laydate.render({
+			  elem: '#datatimeid'
+			  ,type: 'datetime'
+			});
+		},
+		hideFileInput: function(){
+			$(".writeCover-uploadIcon").hide();
+			$("#tiTuFileInput").hide();
+			/*$(".addtext").hide();*/
+		},
+		showFileInput: function(){
+			$(".writeCover-uploadIcon").show();
+			$("#tiTuFileInput").show();
+			/*$(".addtext").show();*/
 		},
 		initData: function(){
 			this.ajaxEdit({});
@@ -107,16 +123,6 @@ var Write = (function(){
 		    	]],
 		    });
 		},
-		hideFileInput: function(){
-			$(".writeCover-uploadIcon").hide();
-			$("#tiTuFileInput").hide();
-			/*$(".addtext").hide();*/
-		},
-		showFileInput: function(){
-			$(".writeCover-uploadIcon").show();
-			$("#tiTuFileInput").show();
-			/*$(".addtext").show();*/
-		},
 		// 节流函数
 		throttle: function(action, delay){
 		  var last = 0;
@@ -128,8 +134,50 @@ var Write = (function(){
 		    }
 		  }
 		},
-		uploadTiTu: function(formId){
+		// 上传图片前获取图片的尺寸和大小
+		imgSize: function(input, formid, callback){
 			var self = this;
+			if(input.files){
+                //读取图片数据  
+				var f = input.files[0]; 
+				
+				if(f.size > self.picSize){
+  					alert("抱歉！请上传大小为 5M 以下的图片文件");
+  				}else{
+  					callback(formid, self);
+  				}
+				
+				/*var reader = new FileReader();  
+				reader.onload = function (e) {
+      				var data = e.target.result;  
+      				//加载图片获取图片真实宽度和高度  
+      				var image = new Image();  
+      				image.onload=function(){  
+          				var width = image.width;  
+          				var height = image.height;  
+          				//alert(width+'======'+height+"====="+f.size);
+      			};  
+      			image.src= data;  
+	  			};  
+	      		reader.readAsDataURL(f);*/  
+	  		}else{
+				var image = new Image();   
+				image.onload =function(){  
+				    var width = image.width;  
+				    var height = image.height;  
+				    var fileSize = image.fileSize;  
+				   // alert(width+'======'+height+"====="+fileSize);
+				    if(fileSize > self.picSize){
+      					alert("抱歉！请上传大小为 5M 以下的图片文件");
+      				}else{
+      					callback(formid, self);
+      				}
+				}  
+				image.src = input.value;
+			}
+		},
+		uploadTiTu: function(formId, that){
+			var self = that;
 			$(".writeCover-previewWrapper").show();
 			// 显示进度条
 			Progressbar.show();
@@ -158,7 +206,14 @@ var Write = (function(){
 			        	$("#tiTuImg").attr("src", self.baseurl+"/upload/"+res.rows[0].picUrl);
 			        	$(".img-wrapper").show();
 			        }else{
-			        	alert("未知错误3");
+			        	// 像素不合适
+		        		alert(res.msg);
+		        		$(".writeCover-previewWrapper").show();
+						// 显示进度条
+						Progressbar.hide();
+						// 显示进度条的同时，隐藏file input
+						self.showFileInput();
+						$(".img-wrapper").show();
 			        }
 			    }
 			};
@@ -184,11 +239,70 @@ var Write = (function(){
 		},
 		initEvent: function(){
 			var self = this; 
+			
+			// 发布按钮
+			$(".publish-btn").click(function(){
+				$(".box").show();
+			});
+			$(".nextbtn").click(function(){
+				var isPicNews = $('#isPicNews').is(':checked')?1:0;
+				var showTime = $("#datatimeid").val();
+				var articleId = $("#articleId").html();
+				$.ajax({
+					type:"post",
+					url:self.baseurl+"/news/publishNews",
+					async:true,
+					data: {
+						id: articleId,
+						showTime: new Date(showTime),
+						isRollImg: isPicNews
+					},
+					success: function(res){
+						console.log(res);
+					},
+					error: function(error){
+						
+					}
+				});
+				
+			});
+			// 新闻类型的change事件
+			$("input[name='newstype']").change(function(){
+				var value = $(this).val();
+				self.ajaxEdit({
+					newsTypeID: value,
+					picUrl: ""
+				});
+				$(".img-wrapper").hide();
+				self.showFileInput();
+				$(".writeCover-previewWrapper").show();
+				$("#isPicNews").attr("checked", false);
+				switch (value){
+					case '1':
+					case '3':
+					case '4':
+					case '5':
+						$("#isPicNews").attr("disabled", false);
+						$(".noticeInfo").html("图片像素要求16*5");
+						break;
+					case '2':
+						$("#isPicNews").attr("disabled", true);
+						$(".noticeInfo").html("图片像素宽高比要求10:4");		
+						break;
+					case '6':
+						$("#isPicNews").attr("disabled", true);
+						$(".noticeInfo").html("图片像素宽高比要求8:4");		
+						break;
+					default:
+						break;
+				}
+			});
 			// 题图的change事件
 			$("#tiTuFileInput").change(function(){
-				self.uploadTiTu("tiTuFileInput");
+				// 获取图片的大小-->上传图片
+				var input = document.getElementById("inputid");  
+				self.imgSize(input, 'tiTuFileInput', self.uploadTiTu);
 			});
-			
 			
 			// 屏蔽textarea的回车换行事件
 			self.textarea.keydown(function(e){
@@ -203,7 +317,19 @@ var Write = (function(){
 				var textareaVal = self.textarea.val();
 				// 1.判断标题内容的长度，至多允许100个字符
 				var length = textareaVal.length;
-				if(length>100){
+				if(length === 0){
+					// 不允许发布
+					//alert("不允许发布")
+					$(".publish-btn").removeClass("publish-yes").addClass("publish-no");
+					$(".publish-btn").attr("disabled", true);
+				}else{
+					var contentVallength = self.ue.getContent().length;
+					if(contentVallength!=0){
+						$(".publish-btn").removeClass("publish-no").addClass("publish-yes");
+						$(".publish-btn").attr("disabled", false);
+					}
+				}
+				if(length > 100){
 					$(".titleinfo")
 						.html("标题超过  "+(length-100)+"  个字，无法保存")
 						.removeClass("titlegray")
@@ -222,15 +348,27 @@ var Write = (function(){
 			// 富文本框的内容改变事件
 			self.ue.addListener("contentChange",CommonUtils.throttle(function(){
 				var contentVal = self.ue.getContent();
+				if(contentVal.length===0){
+					//alert("不允许发布");
+					$(".publish-btn").removeClass("publish-yes").addClass("publish-no");
+					$(".publish-btn").attr("disabled", true);
+				}else{
+					var textareaVallength = self.textarea.val().length;
+					if(textareaVallength!=0){
+						$(".publish-btn").removeClass("publish-no").addClass("publish-yes");
+						$(".publish-btn").attr("disabled", false);
+					}
+				}
 				self.ajaxEdit({content: contentVal});
 			}, 2000));
 			
 			// 替换删除的click事件
-			/*$(".reset").click(function(){
-				alert("重置");
-			});*/
 			$("#resettiTuFileInput").change(function(){
-				self.uploadTiTu("resettiTuFileInput");
+				// 获取图片的大小-->上传图片
+				var input = document.getElementById("resetInputid");  
+				self.imgSize(input, 'resettiTuFileInput', self.uploadTiTu);
+				
+				//self.uploadTiTu("resettiTuFileInput");
 			});
 			$(".remove").click(function(){
 				self.showFileInput();
@@ -239,7 +377,6 @@ var Write = (function(){
 				self.ajaxEdit({
 					picUrl: ""
 				});
-	        	
 			});
 		},
 		ajaxEdit: function(dataObj){
@@ -263,7 +400,6 @@ var Write = (function(){
 						}else if(objPropertyCount==0){
 							console.log("初始化数据");
 							// 题图赋值
-							console.log(res);
 							if(res.rows[0].picUrl != null && res.rows[0].picUrl != ""){
 								$(".writeCover-previewWrapper").hide();
 					        	$("#tiTuImg").attr("src", self.baseurl+"/upload/"+res.rows[0].picUrl);
@@ -271,7 +407,11 @@ var Write = (function(){
 							}else{
 								
 							}
+							// 类型赋值
+							$("input[name='newstype'][value="+res.rows[0].newsTypeID+"]").attr("checked",true);
 							
+							// 是否是轮播图赋值
+							// 时间选择框赋值
 							
 							// textarea赋值							
 							self.textarea.val(res.rows[0].title);
