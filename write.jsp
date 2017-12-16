@@ -27,9 +27,30 @@
 				<span class="titleinfo titlegray">草稿自动保存</span>
 			</div>
 			<div class="publish-wapper" >
-				<div class="btn my-btn">发布<i class="icon-chevron-down"></i></div>
+				<button disabled="true" type="button" class="btn publish-btn publish-no">发布<i class="icon-chevron-down"></i></button>
+				<div class="box">
+					<div class="arrow-group">
+						<span class="pannel-arrow "></span>
+						<span class="pannel-arrow1"></span>
+					</div>
+						
+					<div class="publish-pannel">
+						<label id="isPicNewsLable" class="" for="isPicNews">
+							<input disabled="true" class="picNews-no" id="isPicNews" type="checkbox" />   是否作为图片新闻展示
+						</label>
+						<div class="showtime">
+							<span>显示时间:</span>
+							<input id="datatimeid" placeholder="yyyy-MM-dd HH:mm:ss" class="layui-input" type="text" style="height: 22px;width: 138px;" readonly="readonly">
+						</div>
+						
+						<div class="nextbtn-wrapper">
+							<button class="nextbtn">确定</button>
+						</div>
+					</div>
+						
+				</div>
 			</div>
-			<div class="box">下拉框</div>
+			
 		</div>
 		
 		<div class="edit-wrapper">
@@ -90,24 +111,19 @@
 				</script>
 			</div>
 		</div>
- 	    <!--<script src="media/js/jquery-1.10.1.min.js"></script>-->
+		<!--<script src="media/js/jquery-1.10.1.min.js"></script>-->
  	    <script src="${pageContext.request.contextPath }/admin/media/js/third-party/jquery.min.js"></script>
     	<script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/admin/media/js/ueditor.config.js"></script>
 	    <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/admin/media/js/ueditor.all.js"> </script>
 	    <!--<script type="text/javascript" charset="utf-8" src="ueditor.parse.js"> </script>-->
 	    <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/admin/media/js/lang/zh-cn/zh-cn.js"></script>
+	    <script type="text/javascript" charset="UTF-8" src="${pageContext.request.contextPath }/admin/media/laydate.js"></script>
    		<script src="${pageContext.request.contextPath }/admin/media/src/commonUtils.js"></script>
    		<script src="${pageContext.request.contextPath }/admin/media/src/progress.js"></script>
    		<script src="${pageContext.request.contextPath }/admin/media/src/write.js"></script>
-   	
     	<!-- 实例化编辑器 -->
     	<script type="text/javascript">
     		Write.init();
-    		//$('.box').hide()
-    		$('.publish-wapper').click(function(){
-    			$('.box').show()
-    		})
-    		
-	    </script>
+	</script>
 	</body>
 </html>
