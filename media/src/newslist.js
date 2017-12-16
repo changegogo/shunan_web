@@ -181,6 +181,9 @@ var NewsList = (function(){
 					title : "显示时间",
 					width: 150,
 					formatter: function(value, row, e){
+						if(row.showTime == null){
+							return "暂无";
+						}
 						return CommonUtils.timeStampToDate(row.showTime);
 					}
 				},{
@@ -191,7 +194,6 @@ var NewsList = (function(){
 					width: 100,
 					formatter : function(value, row, index) {
 						if(row.status === 0){
-							
 							return "<span class='label label-success'>已发布</span>";
 						}else{
 							return "<span class='label label-inverse'>草稿</span>";
@@ -205,7 +207,11 @@ var NewsList = (function(){
 					title : "操作",
 					width: 100,
 					formatter: function(value, row, index){
-						return "<a target='_blank' href='/committeewb/news/edit/'"+row.id+" class='btn btn-primary btn-mini'>编辑</a>";
+						var text = "编辑";
+						if(row.status===0){
+							text = "更新";
+						}
+						return "<a target='_blank' href=/committeewb/news/edit/"+row.id+" class='btn btn-primary btn-mini'>"+text+"</a>";
 					}
 				}],
 				data : []

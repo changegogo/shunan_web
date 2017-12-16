@@ -50,7 +50,7 @@ body {
 
 .header .publish-wapper{
 	display: inline-block;
-	line-height: 50px;
+	line-height: 42px;
 	margin-right: 10px;
 	position: absolute;
 	right: 0;
@@ -79,14 +79,60 @@ body {
 
 .header .box{
 	position: absolute;
+	background: white;
 	top:50px;
-	right: 55px;
-	width: 250px;
+	right: 8px;
+	width: 225px;
 	height: 155px;
 	border: 1px solid #EEEEEE;
 	display: none;
 	padding: 10px 0 10px 10px;
+	-moz-box-shadow: -2px 2px 4px #888888;
+	box-shadow: -2px 2px 20px #888888;
 }
+.arrow-group{
+	position: absolute;
+    top: -16px;
+    left: 150px;
+}
+.header .box .pannel-arrow{
+	display: block;
+    width: 0;
+    height: 0;
+}
+.header .box .pannel-arrow:after{
+	position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    border: 8px solid transparent;
+    /*margin-top: 1px;*/
+    border-bottom-color: #eee;
+}
+.header .box .pannel-arrow1{
+	display: block;
+    width: 0;
+    height: 0;
+}
+.header .box .pannel-arrow1:after{
+	position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    border: 8px solid transparent;
+    margin-top: 2px;
+    border-bottom-color: #fff;
+}
+
+.linethrough{
+	text-decoration: line-through;
+}
+
+
+.header .box .publish-pannel{
+	
+}
+
 
 .header .box .picNews-no {
 	
@@ -101,11 +147,11 @@ body {
     color: blue;
     width: 100px;
     height: 32px;
-    border-radius: 10px;
+    border-radius: 6px;
 }
 
 .header .box .nextbtn-wrapper {
-	
+	margin-top: 28px;
 }
 
 .edit-wrapper {

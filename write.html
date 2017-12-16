@@ -14,7 +14,7 @@
 	<body>
 		<div class="header">
 			<!--<c:if test="${id!=null }">${id }</c:if><c:if test="${id==null }">-1</c:if>-->
-			<span id="articleId" style="display: none;">78</span>
+			<span id="articleId" style="display: none;">111</span>
 			<div class="logo">
 				翡翠
 			</div>
@@ -25,17 +25,25 @@
 			<div class="publish-wapper" >
 				<button disabled="true" type="button" class="btn publish-btn publish-no">发布<i class="icon-chevron-down"></i></button>
 				<div class="box">
-					<label for="isPicNews">
-						<input disabled="true" class="picNews-no" id="isPicNews" type="checkbox" />是否作为图片新闻展示
-					</label>
-					<div class="showtime">
-						<span>显示时间:</span>
-						<input id="datatimeid" type="text" readonly="readonly">
+					<div class="arrow-group">
+						<span class="pannel-arrow "></span>
+						<span class="pannel-arrow1"></span>
 					</div>
-					
-					<div class="nextbtn-wrapper">
-						<button class="nextbtn">下一步</button>
+						
+					<div class="publish-pannel">
+						<label id="isPicNewsLable" class="" for="isPicNews">
+							<input disabled="true" class="picNews-no" id="isPicNews" type="checkbox" />   是否作为图片新闻展示
+						</label>
+						<div class="showtime">
+							<span>显示时间:</span>
+							<input id="datatimeid" placeholder="yyyy-MM-dd HH:mm:ss" class="layui-input" type="text" style="height: 22px;width: 138px;" readonly="readonly">
+						</div>
+						
+						<div class="nextbtn-wrapper">
+							<button class="nextbtn">确定</button>
+						</div>
 					</div>
+						
 				</div>
 			</div>
 			

@@ -5,6 +5,7 @@ var Write = (function(){
 		ue: null, // 富文本对象
 		timer: null, // 节流器中的定时器,
 		picSize: 5 * 1024 * 1024, // 1M
+		firstgetdata: 1,
 		init: function(){
 			// 初始化进度条
 			Progressbar.init();
@@ -27,6 +28,7 @@ var Write = (function(){
 		showFileInput: function(){
 			$(".writeCover-uploadIcon").show();
 			$("#tiTuFileInput").show();
+			$("#inputid").val("");
 			/*$(".addtext").show();*/
 		},
 		initData: function(){
@@ -187,6 +189,9 @@ var Write = (function(){
 			// 组装FormData对象
 			var form = document.getElementById(formId);
 			var formData = new FormData(form);
+			// 新闻类型id
+			var newstype = $("input[name='newstype']:checked").val();
+			formData.append('newsTypeID', newstype);
 			// 文章id
 			var articleId = $("#articleId").html();
 			
@@ -239,10 +244,26 @@ var Write = (function(){
 		},
 		initEvent: function(){
 			var self = this; 
-			
+			// 点击除发布按钮和box框之外的区域关闭box框
+			var publishBtn = $(".publish-btn")[0];
+			var box = $(".box")[0];
+			$(document).click(function(e){
+				var aim = e.target;
+				console.log(aim);
+				console.log(publishBtn)
+				if(aim==publishBtn || aim==box){
+					//alert(123)
+				}else{
+					$(".box").slideUp();
+				}
+			});
+			$(".box").click(function(e){
+				e.stopPropagation();
+			});
 			// 发布按钮
-			$(".publish-btn").click(function(){
-				$(".box").show();
+			$(".publish-btn").click(function(e){
+				$(".box").slideDown();
+				e.stopPropagation();
 			});
 			$(".nextbtn").click(function(){
 				var isPicNews = $('#isPicNews').is(':checked')?1:0;
@@ -254,7 +275,7 @@ var Write = (function(){
 					async:true,
 					data: {
 						id: articleId,
-						showTime: new Date(showTime),
+						showTime: showTime===""?new Date():new Date(showTime),
 						isRollImg: isPicNews
 					},
 					success: function(res){
@@ -273,24 +294,30 @@ var Write = (function(){
 					newsTypeID: value,
 					picUrl: ""
 				});
+				// 隐藏图片展示
 				$(".img-wrapper").hide();
+				// 显示file表单
 				self.showFileInput();
 				$(".writeCover-previewWrapper").show();
 				$("#isPicNews").attr("checked", false);
+				
 				switch (value){
 					case '1':
 					case '3':
 					case '4':
 					case '5':
 						$("#isPicNews").attr("disabled", false);
+						$("#isPicNewsLable").removeClass("linethrough");
 						$(".noticeInfo").html("图片像素要求16*5");
 						break;
 					case '2':
 						$("#isPicNews").attr("disabled", true);
+						$("#isPicNewsLable").addClass("linethrough");
 						$(".noticeInfo").html("图片像素宽高比要求10:4");		
 						break;
 					case '6':
 						$("#isPicNews").attr("disabled", true);
+						$("#isPicNewsLable").addClass("linethrough");
 						$(".noticeInfo").html("图片像素宽高比要求8:4");		
 						break;
 					default:
@@ -343,10 +370,20 @@ var Write = (function(){
 				// 2.提交后台交互保存数据
 				// 第一次提交数据，地址为 /news/draft/-1
 				var articleId = $("#articleId").html();
-				self.ajaxEdit({title: textareaVal});
+				// 获取类型值
+				var newstype = $("input[name='newstype']:checked").val();
+				self.ajaxEdit({title: textareaVal,newsTypeID:newstype});
 			}, 1000));
+			self.ue.addListener('focus',function(editor){
+				$(".box").slideUp();
+			});
+			
 			// 富文本框的内容改变事件
 			self.ue.addListener("contentChange",CommonUtils.throttle(function(){
+				if(self.firstgetdata === 1 && $("#articleId").html()!=-1){
+					self.firstgetdata = 2;
+					return;
+				}
 				var contentVal = self.ue.getContent();
 				if(contentVal.length===0){
 					//alert("不允许发布");
@@ -359,7 +396,9 @@ var Write = (function(){
 						$(".publish-btn").attr("disabled", false);
 					}
 				}
-				self.ajaxEdit({content: contentVal});
+				// 获取类型值
+				var newstype = $("input[name='newstype']:checked").val();
+				self.ajaxEdit({content: contentVal, newsTypeID:newstype});
 			}, 2000));
 			
 			// 替换删除的click事件
@@ -399,25 +438,40 @@ var Write = (function(){
 							window.history.replaceState({}, '', "edit/"+res.rows[0].id);
 						}else if(objPropertyCount==0){
 							console.log("初始化数据");
+							// 发布按钮状态,title and content都不为空值，设置发布按钮为可用状态
+							if(res.rows[0].title!="" && res.rows[0].content!=""){
+								$(".publish-btn").removeClass("publish-no").addClass("publish-yes");
+								$(".publish-btn").attr("disabled", false);
+							}
 							// 题图赋值
 							if(res.rows[0].picUrl != null && res.rows[0].picUrl != ""){
 								$(".writeCover-previewWrapper").hide();
-					        	$("#tiTuImg").attr("src", self.baseurl+"/upload/"+res.rows[0].picUrl);
-					        	$(".img-wrapper").show();
+						        	$("#tiTuImg").attr("src", self.baseurl+"/upload/"+res.rows[0].picUrl);
+						        	$(".img-wrapper").show();
 							}else{
 								
 							}
+							// 判断文章发布状态
+							if(res.rows[0].status===0){
+								$(".publish-btn").html("更新<i class='icon-chevron-down'></i>");
+							}
 							// 类型赋值
 							$("input[name='newstype'][value="+res.rows[0].newsTypeID+"]").attr("checked",true);
-							
-							// 是否是轮播图赋值
+							// 是否是轮播图赋值 todo
 							// 时间选择框赋值
-							
+							if(res.rows[0].showTime != null){
+								var time = CommonUtils.timeStampToDate(res.rows[0].showTime);
+								$("#datatimeid").val(time);
+							}
 							// textarea赋值							
 							self.textarea.val(res.rows[0].title);
 							self.initTextArea();
 							// ue赋值	
 							self.ue.addListener("ready", function () {
+								if(res.rows[0].content == ""){
+									self.firstgetdata = 2;
+									return;
+								}
 					            self.ue.setContent(res.rows[0].content);
 					        }); 
 						}
