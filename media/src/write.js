@@ -32,7 +32,10 @@ var Write = (function(){
 			/*$(".addtext").show();*/
 		},
 		initData: function(){
-			this.ajaxEdit({});
+			var self = this;
+			self.ue.addListener("ready", function () {
+				self.ajaxEdit({});
+	        }); 
 		},
 		// 初始化textArea使其能够随着输入文本的多少换行
 		initTextArea: function(){
@@ -466,14 +469,13 @@ var Write = (function(){
 							// textarea赋值							
 							self.textarea.val(res.rows[0].title);
 							self.initTextArea();
-							// ue赋值	
-							self.ue.addListener("ready", function () {
-								if(res.rows[0].content == ""){
-									self.firstgetdata = 2;
-									return;
-								}
+							if(res.rows[0].content == ""){
+								self.firstgetdata = 2;
+							}else{
+								console.log("-----------");
+								console.log(res.rows[0].content);
 					            self.ue.setContent(res.rows[0].content);
-					        }); 
+							}
 						}
 					}else{
 						alert(res.msg);
