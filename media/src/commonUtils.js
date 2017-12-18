@@ -1,6 +1,6 @@
 var CommonUtils = (function(){
 	return {
-		baseUrl: "http://192.168.0.109:8080/committeewb",
+		baseUrl: "/committeewb",
 		add0: function(m){
 			return m<10 ? '0'+m : m;
 		},
