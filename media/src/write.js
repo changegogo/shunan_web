@@ -151,20 +151,6 @@ var Write = (function(){
   				}else{
   					callback(formid, self);
   				}
-				
-				/*var reader = new FileReader();  
-				reader.onload = function (e) {
-      				var data = e.target.result;  
-      				//加载图片获取图片真实宽度和高度  
-      				var image = new Image();  
-      				image.onload=function(){  
-          				var width = image.width;  
-          				var height = image.height;  
-          				//alert(width+'======'+height+"====="+f.size);
-      			};  
-      			image.src= data;  
-	  			};  
-	      		reader.readAsDataURL(f);*/  
 	  		}else{
 				var image = new Image();   
 				image.onload =function(){  
@@ -282,7 +268,8 @@ var Write = (function(){
 						isRollImg: isPicNews
 					},
 					success: function(res){
-						console.log(res);
+						alert(res.msg);
+						$(".box").slideUp();
 					},
 					error: function(error){
 						
@@ -306,6 +293,7 @@ var Write = (function(){
 				
 				switch (value){
 					case '1':
+					case '2':
 					case '3':
 					case '4':
 					case '5':
@@ -313,15 +301,20 @@ var Write = (function(){
 						$("#isPicNewsLable").removeClass("linethrough");
 						$(".noticeInfo").html("图片像素要求16*5");
 						break;
-					case '2':
+					case '6':
 						$("#isPicNews").attr("disabled", true);
 						$("#isPicNewsLable").addClass("linethrough");
 						$(".noticeInfo").html("图片像素宽高比要求10:4");		
 						break;
-					case '6':
+					case '7':
 						$("#isPicNews").attr("disabled", true);
 						$("#isPicNewsLable").addClass("linethrough");
 						$(".noticeInfo").html("图片像素宽高比要求8:4");		
+						break;
+					case '8':
+						$("#isPicNews").attr("disabled", true);
+						$("#isPicNewsLable").addClass("linethrough");
+						$(".noticeInfo").html("图片像素宽高比要求80:40");		
 						break;
 					default:
 						break;
@@ -421,6 +414,56 @@ var Write = (function(){
 				});
 			});
 		},
+		// 获取新闻是否是图片新闻
+		setIsPicNews: function(id, newsType){
+			var self = this;
+			switch (newsType){
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+					$("#isPicNews").attr("disabled", false);
+					$("#isPicNewsLable").removeClass("linethrough");
+					$(".noticeInfo").html("图片像素要求16*5");
+					break;
+				case 6:
+					$("#isPicNews").attr("disabled", true);
+					$("#isPicNewsLable").addClass("linethrough");
+					$(".noticeInfo").html("图片像素宽高比要求10:4");		
+					break;
+				case 7:
+					$("#isPicNews").attr("disabled", true);
+					$("#isPicNewsLable").addClass("linethrough");
+					$(".noticeInfo").html("图片像素宽高比要求8:4");		
+					break;
+				case 8:
+					$("#isPicNews").attr("disabled", true);
+					$("#isPicNewsLable").addClass("linethrough");
+					$(".noticeInfo").html("图片像素宽高比要求80:40");		
+					break;
+				default:
+					break;
+			}
+			$.ajax({
+				type:"post",
+				url:self.baseurl+"/rollImg/queryRollImgByNewsID/"+id,
+				async:true,
+				success: function(res){
+					console.log(res);
+					if(res.rows.length>0){
+						// 是图片新闻
+						$("#isPicNews").attr("checked", true);
+					}else{
+						// 不是图片新闻
+						$("#isPicNews").attr("checked", false);
+					}
+				},
+				error: function(error){
+					
+				}
+			});
+		},
 		ajaxEdit: function(dataObj){
 			var self = this;
 			// 获取对象中的属性个数
@@ -461,6 +504,7 @@ var Write = (function(){
 							// 类型赋值
 							$("input[name='newstype'][value="+res.rows[0].newsTypeID+"]").attr("checked",true);
 							// 是否是轮播图赋值 todo
+							self.setIsPicNews(res.rows[0].id, res.rows[0].newsTypeID);
 							// 时间选择框赋值
 							if(res.rows[0].showTime != null){
 								var time = CommonUtils.timeStampToDate(res.rows[0].showTime);

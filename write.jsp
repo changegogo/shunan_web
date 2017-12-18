@@ -36,7 +36,7 @@
 						
 					<div class="publish-pannel">
 						<label id="isPicNewsLable" class="" for="isPicNews">
-							<input disabled="true" class="picNews-no" id="isPicNews" type="checkbox" />   是否作为图片新闻展示
+							<input class="picNews-no" id="isPicNews" type="checkbox" />   是否作为图片新闻展示
 						</label>
 						<div class="showtime">
 							<span>显示时间:</span>
@@ -72,7 +72,13 @@
 					<input id="newstype5" name="newstype" type="radio" value="5" />蜀南青语 <span style="color: #EEEEEE;">|</span> 
 				</label>
 				<label for="newstype6">
-					<input id="newstype6" name="newstype" type="radio" value="6" />专题活动
+					<input id="newstype6" name="newstype" type="radio" value="6" />专题活动 <span style="color: #EEEEEE;">|</span> 
+				</label>
+				<label for="newstype7">
+					<input id="newstype7" name="newstype" type="radio" value="7" />青春剪影 <span style="color: #EEEEEE;">|</span> 
+				</label>
+				<label for="newstype8">
+					<input id="newstype8" name="newstype" type="radio" value="8" />生活大家谈 
 				</label>
 			</div>
 			<div class="writeCover-wrapper">
