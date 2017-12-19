@@ -10,14 +10,11 @@
 		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 		<meta content="" name="description"/>
 	    <meta content="" name="author"/>
-	    <!--<link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-	    <link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>-->
 	    <link href="${pageContext.request.contextPath }/admin/media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 	    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/admin/media/css/write.css"/>
 	</head>
 	<body>
 		<div class="header">
-			<!--<c:if test="${id!=null }">${id }</c:if><c:if test="${id==null }">-1</c:if>-->
 			<span id="articleId" style="display: none;"><c:if test="${id!=null }">${id }</c:if><c:if test="${id==null }">-1</c:if></span>
 			<div class="logo">
 				翡翠
@@ -130,6 +127,6 @@
     	<!-- 实例化编辑器 -->
     	<script type="text/javascript">
     		Write.init();
-	</script>
+		</script>
 	</body>
 </html>
