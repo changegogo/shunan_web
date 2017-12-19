@@ -16,7 +16,7 @@
     <div class="header">
 			<span id="articleId" style="display: none;"><c:if test="${id!=null }">${id }</c:if><c:if test="${id==null }">-1</c:if></span>
 			<div class="logo">
-				翡翠
+				蜀南
 			</div>
 			<div class="title-wrapper">
 				<span class="title"><c:if test="${type!=null}">${type}</c:if><c:if test="${type==null}">编辑</c:if></span>
@@ -26,7 +26,7 @@
 		
 		<div class="edit-wrapper">
 			<div class="writeTitle-wrapper">
-				<textarea id="textarea" rows="1" class="Input" placeholder="请输入标题" style="height: 44px;"></textarea>
+				<textarea id="textarea" rows="1" class="Input" placeholder="请输入标题" style="height: 44px; border: 1px solid #EEEEEE;"></textarea>
 			</div>
 			<div class="writeContent-wrapper">
 				<script type="text/plain" id="editor" style="width:100%; height: 500px;">

@@ -376,10 +376,10 @@ var Write = (function(){
 			
 			// 富文本框的内容改变事件
 			self.ue.addListener("contentChange",CommonUtils.throttle(function(){
-				if(self.firstgetdata === 1 && $("#articleId").html()!=-1){
+				/*if(self.firstgetdata === 1 && $("#articleId").html()!=-1){
 					self.firstgetdata = 2;
 					return;
-				}
+				}*/
 				var contentVal = self.ue.getContent();
 				if(contentVal.length===0){
 					//alert("不允许发布");
@@ -513,13 +513,14 @@ var Write = (function(){
 							// textarea赋值							
 							self.textarea.val(res.rows[0].title);
 							self.initTextArea();
-							if(res.rows[0].content == ""){
+							self.ue.setContent(res.rows[0].content);
+							/*if(res.rows[0].content == ""){
 								self.firstgetdata = 2;
 							}else{
 								console.log("-----------");
 								console.log(res.rows[0].content);
 					            self.ue.setContent(res.rows[0].content);
-							}
+							}*/
 						}
 					}else{
 						alert(res.msg);
