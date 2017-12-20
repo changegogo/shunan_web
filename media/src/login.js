@@ -53,7 +53,7 @@ var Login = function () {
 	                console.log($(password).val());
 	                var code = input[2];
 	                console.log($(code).val());
-	                window.location.href="index.html";
+	                //window.location.href="index.html";
 	            }
 	        });
 

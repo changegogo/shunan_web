@@ -145,6 +145,12 @@ var NewsList = (function(){
 							case 6:
 								val+='[专题活动]';
 								break;
+							case 7:
+								val+='[青春剪影]';
+								break;
+							case 8:
+								val+='[生活大家谈]';
+								break;
 							default:
 								break;
 						}
