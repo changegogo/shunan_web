@@ -10,7 +10,7 @@ var Lifechat = function(){
 		initTable: function(){
 			var self = this;
 			self.$table.bootstrapTable({
-				url: "http://20.14.3.28:8080/committeewb"+"/lifeChat/queryLifeChat",
+				url: self.baseurl+"/lifeChat/queryLifeChat",
 				sidePagination: "server",
 				dataType : "json",	
 				cache : false, // 不缓存

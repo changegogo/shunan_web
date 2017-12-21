@@ -7,7 +7,7 @@ var CommonUtils = (function(){
 		timeStampToDate: function(timeStamp){
 			var time = new Date(timeStamp);
 			var year=time.getFullYear();     
-			var month=time.getMonth()+1;     
+			var month=time.getMonth()+1; 
 			var date=time.getDate();     
 			var hour=time.getHours();     
 			var minute=time.getMinutes();     

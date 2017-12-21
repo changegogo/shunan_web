@@ -20,7 +20,7 @@ var PictureNews = function(){
                 	return params;
                 },
 				columns : [{
-					field : 'newsID',
+					field : 'id',
 					align : 'center',
 					valign : 'middle',
 					title : "文章ID",
@@ -66,7 +66,7 @@ var PictureNews = function(){
 					title : "是否显示(点击切换)",
 					width: 100,
 					formatter: function(value, row, e){
-						var newsID = row.newsID;
+						var newsID = row.id;
 						var text = "显示";
 						if(!value){
 							text = "不显示";
@@ -83,7 +83,7 @@ var PictureNews = function(){
 								url: self.baseurl+"/rollImg/updateRollImg",
 								async:true,
 								data: {
-									newsID: row.newsID,
+									newsID: row.id,
 									isShow: row.isShow===1?0:1,
 									sort: row.sort
 								},
@@ -103,7 +103,7 @@ var PictureNews = function(){
 					title : "操作",
 					width: 100,
 					formatter: function(value, row, index){
-						return ["<a class='btn btn-primary btn-mini' target='_blank' href=/committeewb/news/edit/"+row.newsID+">编辑</a>",
+						return ["<a class='btn btn-primary btn-mini' target='_blank' href=/committeewb/news/edit/"+row.id+">编辑</a>",
 						" <button id='remove' class='btn btn-danger btn-mini'>删除</button>",].join("");
 					},
 					events : {
@@ -113,7 +113,7 @@ var PictureNews = function(){
 								url: self.baseurl+"/rollImg/deleteRollImg",
 								async:true,
 								data: {
-									newsIDs: row.newsID
+									newsIDs: row.id
 								},
 								success: function(res){
 									$table.bootstrapTable("refresh");
@@ -131,7 +131,7 @@ var PictureNews = function(){
 	                    url: self.baseurl+"/rollImg/updateRollImg",
 	                    dataType: 'JSON',
 	                    data: {
-	                    	newsID: row.newsID,
+	                    	newsID: row.id,
 							sort: row.sort,
 							isShow: row.isShow
 	                    },
